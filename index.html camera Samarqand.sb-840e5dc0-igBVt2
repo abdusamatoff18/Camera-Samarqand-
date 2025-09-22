@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>Kirim-Chiqim-Vazvrat Jadvali</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+    th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+    th { background: #f2f2f2; }
+    input { padding: 5px; }
+    button { padding: 6px 12px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Kirim / Chiqim / Vazvrat hisoboti</h2>
+
+  <label>Boshlang‘ich qoldiq: </label>
+  <input type="number" id="startBalance" value="100000"><br><br>
+
+  <label>Sana: </label>
+  <input type="date" id="date">
+  <label>Izoh: </label>
+  <input type="text" id="desc">
+  <label>Kirim: </label>
+  <input type="number" id="income" value="0">
+  <label>Chiqim: </label>
+  <input type="number" id="expense" value="0">
+  <label>Vazvrat: </label>
+  <input type="number" id="refund" value="0">
+  <button onclick="addRow()">Qo‘shish</button>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Sana</th>
+        <th>Izoh</th>
+        <th>Kirim</th>
+        <th>Chiqim</th>
+        <th>Vazvrat</th>
+        <th>Qoldiq</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let balance = 0;
+    let initialized = false;
+
+    function addRow() {
+      const date = document.getElementById("date").value;
+      const desc = document.getElementById("desc").value;
+      const income = parseFloat(document.getElementById("income").value) || 0;
+      const expense = parseFloat(document.getElementById("expense").value) || 0;
+      const refund = parseFloat(document.getElementById("refund").value) || 0;
+
+      if (!initialized) {
+        balance = parseFloat(document.getElementById("startBalance").value) || 0;
+        initialized = true;
+      }
+
+      balance = balance + income - expense + refund;
+
+      const table = document.getElementById("dataTable").querySelector("tbody");
+      const row = table.insertRow();
+
+      row.insertCell(0).innerText = date;
+      row.insertCell(1).innerText = desc;
+      row.insertCell(2).innerText = income.toFixed(2);
+      row.insertCell(3).innerText = expense.toFixed(2);
+      row.insertCell(4).innerText = refund.toFixed(2);
+      row.insertCell(5).innerText = balance.toFixed(2);
+
+      document.getElementById("desc").value = "";
+      document.getElementById("income").value = 0;
+      document.getElementById("expense").value = 0;
+      document.getElementById("refund").value = 0;
+    }
+  </script>
+</body>
+</html>
+
